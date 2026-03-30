@@ -109,7 +109,13 @@ function viewWishlistPage(){
   list.innerHTML = "";
 
   wishlist.forEach(i=>{
-    list.innerHTML += `<li>${i.name}</li>`;
+list.innerHTML += `
+  <div class="product">
+    <img src="${i.image}">
+    <h3>${i.name}</h3>
+    <p>₹${i.price}</p>
+  </div>
+`;
   });
 }
 
