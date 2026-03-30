@@ -2,25 +2,95 @@
 <html>
 <head>
   <title>Payment</title>
-  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial;
+      margin-top: 80px;
+      background: #f5f5f5;
+    }
+
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 18px;
+      border: 2px solid #ff6f61;
+      background: white;
+      color: #ff6f61;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff6f61;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    #upiBox {
+      display: none;
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+      padding: 10px;
+      width: 80%;
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
+    /* LOADING */
+    #loading {
+      display: none;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    /* SUCCESS */
+    #success {
+      display: none;
+      font-size: 22px;
+      color: green;
+      margin-top: 20px;
+      animation: pop 0.5s ease;
+    }
+
+    @keyframes pop {
+      from {transform: scale(0.5);}
+      to {transform: scale(1);}
+    }
+  </style>
+
 </head>
 <body>
 
-<div class="payment-container">
-  <h2>Select Payment Method</h2>
+<h2>Select Payment Method</h2>
 
-  <div class="payment-buttons">
-    <button onclick="showUPI()">💳 UPI</button>
-    <button onclick="payCOD()">📦 Cash on Delivery</button>
-  </div>
+<button onclick="showUPI()">💳 UPI</button>
+<button onclick="payCOD()">📦 Cash on Delivery</button>
 
-  <!-- UPI BOX -->
-  <div id="upiBox" class="upi-box">
-    <h3>Enter UPI ID</h3>
-    <input type="text" id="upi" placeholder="example@upi">
-    <button onclick="payUPI()">Pay Now</button>
-  </div>
+<!-- UPI BOX -->
+<div id="upiBox">
+  <h3>Enter UPI ID</h3>
+  <input type="text" id="upi" placeholder="example@upi">
+  <br><br>
+  <button onclick="payUPI()">Pay Now</button>
 </div>
+
+<!-- LOADING -->
+<div id="loading">⏳ Processing Payment...</div>
+
+<!-- SUCCESS -->
+<div id="success">✅ Payment Successful 🎉</div>
 
 <script>
 function showUPI(){
@@ -33,16 +103,28 @@ function payUPI(){
   if(upi === ""){
     alert("Please enter UPI ID");
   } else {
-    alert("UPI Payment Successful 🎉");
-    localStorage.removeItem("cart");
-    window.location.href = "index.html";
+    processPayment();
   }
 }
 
 function payCOD(){
-  alert("Order Placed with Cash on Delivery 📦");
-  localStorage.removeItem("cart");
-  window.location.href = "index.html";
+  processPayment();
+}
+
+function processPayment(){
+  document.getElementById("loading").style.display = "block";
+
+  setTimeout(() => {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("success").style.display = "block";
+
+    localStorage.removeItem("cart");
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
+
+  }, 2000);
 }
 </script>
 
