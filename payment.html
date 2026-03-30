@@ -2,20 +2,24 @@
 <html>
 <head>
   <title>Payment</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>Select Payment Method</h2>
+<div class="payment-container">
+  <h2>Select Payment Method</h2>
 
-<button onclick="showUPI()">💳 UPI</button>
-<button onclick="payCOD()">📦 Cash on Delivery</button>
+  <div class="payment-buttons">
+    <button onclick="showUPI()">💳 UPI</button>
+    <button onclick="payCOD()">📦 Cash on Delivery</button>
+  </div>
 
-<!-- UPI BOX -->
-<div id="upiBox" style="display:none;">
-  <h3>Enter UPI ID</h3>
-  <input type="text" id="upi" placeholder="example@upi">
-  <br><br>
-  <button onclick="payUPI()">Pay Now</button>
+  <!-- UPI BOX -->
+  <div id="upiBox" class="upi-box">
+    <h3>Enter UPI ID</h3>
+    <input type="text" id="upi" placeholder="example@upi">
+    <button onclick="payUPI()">Pay Now</button>
+  </div>
 </div>
 
 <script>
