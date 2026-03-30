@@ -11,6 +11,10 @@
       background: #f5f5f5;
     }
 
+    h2 {
+      margin-bottom: 30px;
+    }
+
     button {
       padding: 15px 30px;
       margin: 10px;
@@ -47,27 +51,6 @@
       margin-top: 10px;
       font-size: 16px;
     }
-
-    /* LOADING */
-    #loading {
-      display: none;
-      font-size: 20px;
-      margin-top: 20px;
-    }
-
-    /* SUCCESS */
-    #success {
-      display: none;
-      font-size: 22px;
-      color: green;
-      margin-top: 20px;
-      animation: pop 0.5s ease;
-    }
-
-    @keyframes pop {
-      from {transform: scale(0.5);}
-      to {transform: scale(1);}
-    }
   </style>
 
 </head>
@@ -86,12 +69,6 @@
   <button onclick="payUPI()">Pay Now</button>
 </div>
 
-<!-- LOADING -->
-<div id="loading">⏳ Processing Payment...</div>
-
-<!-- SUCCESS -->
-<div id="success">✅ Payment Successful 🎉</div>
-
 <script>
 function showUPI(){
   document.getElementById("upiBox").style.display = "block";
@@ -103,28 +80,16 @@ function payUPI(){
   if(upi === ""){
     alert("Please enter UPI ID");
   } else {
-    processPayment();
+    alert("UPI Payment Successful 🎉");
+    localStorage.removeItem("cart");
+    window.location.href = "index.html";
   }
 }
 
 function payCOD(){
-  processPayment();
-}
-
-function processPayment(){
-  document.getElementById("loading").style.display = "block";
-
-  setTimeout(() => {
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("success").style.display = "block";
-
-    localStorage.removeItem("cart");
-
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 2000);
-
-  }, 2000);
+  alert("Order Placed with Cash on Delivery 📦");
+  localStorage.removeItem("cart");
+  window.location.href = "index.html";
 }
 </script>
 
