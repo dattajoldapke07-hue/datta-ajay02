@@ -191,3 +191,6 @@ function placeOrder(){
   // Payment page open karega
   window.location.href = "payment.html";
 }
+function placeOrder(){
+  alert("Working");
+}
