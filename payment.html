@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Select Payment Method</h2>
+
+<div class="payment-box">
+  <button onclick="pay('UPI')">💳 UPI</button>
+  <button onclick="pay('Card')">💳 Card</button>
+  <button onclick="pay('COD')">📦 Cash on Delivery</button>
+</div>
+
+<script>
+function pay(method){
+  alert(method + " Payment Successful 🎉");
+  localStorage.removeItem("cart");
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
