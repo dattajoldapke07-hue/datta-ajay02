@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel</title>
+</head>
+<body>
+
+<h2>📊 All Orders</h2>
+
+<div id="orders"></div>
+
+<script>
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+let div = document.getElementById("orders");
+
+orders.forEach(order => {
+  div.innerHTML += `
+    <div style="border:1px solid black; margin:10px; padding:10px;">
+      <h3>Order ID: ${order.id}</h3>
+      <p>Total: ₹${order.total}</p>
+
+      ${order.items.map(i => `
+        <p>${i.name} x ${i.qty}</p>
+      `).join("")}
+    </div>
+  `;
+});
+</script>
+
+</body>
+</html>
