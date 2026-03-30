@@ -51,6 +51,21 @@
       margin-top: 10px;
       font-size: 16px;
     }
+
+    /* LOADING */
+    #loading {
+      display: none;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    /* SUCCESS */
+    #success {
+      display: none;
+      font-size: 20px;
+      color: green;
+      margin-top: 20px;
+    }
   </style>
 
 </head>
@@ -69,6 +84,16 @@
   <button onclick="payUPI()">Pay Now</button>
 </div>
 
+<!-- LOADING -->
+<div id="loading">⏳ Processing Payment...</div>
+
+<!-- SUCCESS -->
+<div id="success">
+  ✅ Payment Successful 🎉 <br><br>
+  📦 Delivery arrives in 3–5 working days <br><br>
+  🧾 Order ID: #12345
+</div>
+
 <script>
 function showUPI(){
   document.getElementById("upiBox").style.display = "block";
@@ -80,16 +105,28 @@ function payUPI(){
   if(upi === ""){
     alert("Please enter UPI ID");
   } else {
-    alert("UPI Payment Successful 🎉");
-    localStorage.removeItem("cart");
-    window.location.href = "index.html";
+    processPayment();
   }
 }
 
 function payCOD(){
-  alert("Order Placed with Cash on Delivery 📦");
-  localStorage.removeItem("cart");
-  window.location.href = "index.html";
+  processPayment();
+}
+
+function processPayment(){
+  document.getElementById("loading").style.display = "block";
+
+  setTimeout(() => {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("success").style.display = "block";
+
+    localStorage.removeItem("cart");
+
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 3000);
+
+  }, 2000);
 }
 </script>
 
