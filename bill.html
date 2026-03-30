@@ -52,7 +52,16 @@
 
 <script>
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
+// SAVE ORDER
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
+orders.push({
+  id: Date.now(),
+  items: cart,
+  total: total
+});
+
+localStorage.setItem("orders", JSON.stringify(orders));
 let itemsDiv = document.getElementById("items");
 let total = 0;
 
