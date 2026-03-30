@@ -110,14 +110,17 @@ function viewWishlistPage(){
   const list = document.getElementById("wishlist-items");
   list.innerHTML = "";
 
-  wishlist.forEach(i=>{
-list.innerHTML += `
-  <div class="product">
-    <img src="${i.image}">
-    <h3>${i.name}</h3>
-    <p>₹${i.price}</p>
-  </div>
-`;
+  wishlist.forEach(i => {
+    list.innerHTML += `
+      <div class="product">
+        <img src="${i.image}">
+        <h3>${i.name}</h3>
+        <p>₹${i.price}</p>
+
+        <button onclick="addFromWishlist(${i.id})">Add to Cart</button>
+        <button onclick="removeFromWishlist(${i.id})">Remove</button>
+      </div>
+    `;
   });
 }
 
@@ -156,4 +159,25 @@ function navigate(page){
   setTimeout(()=>{
     window.location.href = page;
   }, 300);
+}
+function addFromWishlist(id){
+  const product = wishlist.find(i => i.id === id);
+
+  let item = cart.find(i => i.id === id);
+
+  if(item){
+    item.qty++;
+  } else {
+    cart.push({...product, qty:1});
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert("Added to Cart");
+}
+function removeFromWishlist(id){
+  wishlist = wishlist.filter(i => i.id !== id);
+
+  localStorage.setItem("wishlist", JSON.stringify(wishlist));
+
+  viewWishlistPage();
 }
