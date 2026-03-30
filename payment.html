@@ -2,14 +2,75 @@
 <html>
 <head>
   <title>Payment</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <h2>Select Payment Method</h2>
 
-<button onclick="alert('UPI Payment Successful')">UPI</button><br><br>
-<button onclick="alert('Card Payment Successful')">Card</button><br><br>
-<button onclick="alert('COD Order Placed')">Cash on Delivery</button>
+<div class="payment-box">
+  <button onclick="showUPI()">💳 UPI</button>
+  <button onclick="showCard()">💳 Card</button>
+  <button onclick="payCOD()">📦 Cash on Delivery</button>
+</div>
+
+<!-- UPI FORM -->
+<div id="upi-box" style="display:none;">
+  <h3>Enter UPI ID</h3>
+  <input type="text" id="upi" placeholder="example@upi">
+  <button onclick="payUPI()">Pay Now</button>
+</div>
+
+<!-- CARD FORM -->
+<div id="card-box" style="display:none;">
+  <h3>Enter Card Details</h3>
+  <input type="text" id="cardno" placeholder="Card Number"><br><br>
+  <input type="text" id="cvv" placeholder="CVV"><br><br>
+  <button onclick="payCard()">Pay Now</button>
+</div>
+
+<script>
+function showUPI(){
+  document.getElementById("upi-box").style.display = "block";
+  document.getElementById("card-box").style.display = "none";
+}
+
+function showCard(){
+  document.getElementById("card-box").style.display = "block";
+  document.getElementById("upi-box").style.display = "none";
+}
+
+function payUPI(){
+  let upi = document.getElementById("upi").value;
+
+  if(upi === ""){
+    alert("Please enter UPI ID");
+  } else {
+    alert("UPI Payment Successful 🎉");
+    localStorage.removeItem("cart");
+    window.location.href = "index.html";
+  }
+}
+
+function payCard(){
+  let card = document.getElementById("cardno").value;
+  let cvv = document.getElementById("cvv").value;
+
+  if(card === "" || cvv === ""){
+    alert("Enter Card Details");
+  } else {
+    alert("Card Payment Successful 🎉");
+    localStorage.removeItem("cart");
+    window.location.href = "index.html";
+  }
+}
+
+function payCOD(){
+  alert("Order Placed with Cash on Delivery 📦");
+  localStorage.removeItem("cart");
+  window.location.href = "index.html";
+}
+</script>
 
 </body>
 </html>
