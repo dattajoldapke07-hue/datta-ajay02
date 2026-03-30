@@ -182,3 +182,12 @@ function removeFromWishlist(id){
 
   viewWishlistPage();
 }
+function placeOrder(){
+  if(cart.length === 0){
+    alert("Cart is empty!");
+    return;
+  }
+
+  // Payment page open karega
+  window.location.href = "payment.html";
+}
