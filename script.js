@@ -134,3 +134,6 @@ function toggleDark(){
 /* INIT */
 loadProducts();
 updateCartCount();
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("loaded");
+});
