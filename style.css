@@ -308,3 +308,11 @@ body.loaded {
   border: none;
   border-radius: 5px;
 }
+#upi-box, #card-box {
+  margin-top: 20px;
+}
+
+input {
+  padding: 10px;
+  margin: 5px;
+}
