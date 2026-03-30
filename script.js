@@ -83,6 +83,8 @@ items.innerHTML += `
     <img src="${i.image}">
     <h3>${i.name}</h3>
     <p>₹${i.price} x ${i.qty}</p>
+    
+    <button onclick="removeItem(${i.id})">❌ Remove</button>
   </div>
 `;
     sum += i.price * i.qty;
