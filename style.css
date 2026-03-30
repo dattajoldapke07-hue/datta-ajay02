@@ -276,3 +276,18 @@ body {
 body.loaded {
   opacity: 1;
 }
+.payment-box {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 20px;
+}
+
+.payment-box button {
+  padding: 15px;
+  font-size: 18px;
+  background: #ff6f61;
+  color: white;
+  border: none;
+  border-radius: 8px;
+}
