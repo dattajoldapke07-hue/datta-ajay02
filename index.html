@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>3D E-Commerce Store</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="intro">
+  <h1 class="logo">🛍️ Datta & Ajay's Store</h1>
+</div>
+
+<header>
+  <h1>My E-Commerce Store</h1>
+
+  <input type="text" id="search" placeholder="Search..." onkeyup="searchProduct()">
+  
+  <button onclick="toggleDark()">🌙</button>
+  <a href="wishlist.html">❤️ Wishlist</a>
+  <a href="cart.html">🛒 Cart (<span id="cart-count">0</span>)</a>
+</header>
+
+<section id="products"></section>
+
+<script src="script.js"></script>
+</body>
+</html>
