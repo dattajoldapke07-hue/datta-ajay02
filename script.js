@@ -137,3 +137,9 @@ updateCartCount();
 document.addEventListener("DOMContentLoaded", () => {
   document.body.classList.add("loaded");
 });
+function navigate(page){
+  document.body.classList.remove("loaded");
+  setTimeout(()=>{
+    window.location.href = page;
+  }, 300);
+}
