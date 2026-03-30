@@ -78,7 +78,13 @@ function viewCartPage(){
   let sum = 0;
 
   cart.forEach(i => {
-    items.innerHTML += `<li>${i.name} ₹${i.price} x ${i.qty}</li>`;
+items.innerHTML += `
+  <div class="product">
+    <img src="${i.image}">
+    <h3>${i.name}</h3>
+    <p>₹${i.price} x ${i.qty}</p>
+  </div>
+`;
     sum += i.price * i.qty;
   });
 
