@@ -72,25 +72,26 @@ function addToCart(id) {
 
 function viewCartPage(){
   const items = document.getElementById("cart-items");
-  const total = document.getElementById("total");
+  const totalBox = document.getElementById("total");
 
   items.innerHTML = "";
-  let sum = 0;
+  let total = 0;
 
   cart.forEach(i => {
-items.innerHTML += `
-  <div class="product">
-    <img src="${i.image}">
-    <h3>${i.name}</h3>
-    <p>₹${i.price} x ${i.qty}</p>
-    
-    <button onclick="removeItem(${i.id})">❌ Remove</button>
-  </div>
-`;
-    sum += i.price * i.qty;
+    total += i.price * i.qty;
+
+    items.innerHTML += `
+      <div class="product">
+        <img src="${i.image}">
+        <h3>${i.name}</h3>
+        <p>₹${i.price} x ${i.qty}</p>
+
+        <button onclick="removeItem(${i.id})">Remove</button>
+      </div>
+    `;
   });
 
-  total.innerText = sum;
+  totalBox.innerText = total;
 }
 
 function updateCartCount(){
