@@ -2,98 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>User Login</title>
+  <title>Login - User</title>
   <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      font-family: Arial;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    }
-
-    #loginBox {
-      background: white;
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-      text-align: center;
-      width: 300px;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      color: #ff6f61;
-    }
-
-    input {
-      padding: 10px;
-      width: 90%;
-      margin: 10px 0;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      padding: 12px 20px;
-      margin-top: 15px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      background: #ff6f61;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #ff3b2e;
-    }
-
-    .error {
-      color: red;
-      margin-top: 10px;
-      font-size: 14px;
-    }
+    body { font-family: Arial; text-align: center; margin-top: 100px; background:#f5f5f5;}
+    input { padding:10px; margin:5px; width:200px; font-size:16px; }
+    button { padding:10px 20px; margin:10px; font-size:16px; border-radius:8px; cursor:pointer; border:2px solid #ff6f61; background:white; color:#ff6f61; transition:0.3s; }
+    button:hover { background:#ff6f61; color:white; transform:scale(1.05); }
+    .error { color:red; font-weight:bold; }
   </style>
 </head>
 <body>
-
-<div id="loginBox">
   <h2>User Login</h2>
-  <input type="text" id="username" placeholder="Enter Username" required><br>
-  <input type="password" id="password" placeholder="Enter Password" required><br>
+  <input type="text" id="username" placeholder="Enter username"><br>
+  <input type="password" id="password" placeholder="Any password"><br>
   <button onclick="loginUser()">Login</button>
-  <div class="error" id="errorMsg"></div>
-</div>
+  <p id="errorMsg" class="error"></p>
 
-<script>
-function loginUser(){
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
-  const errorDiv = document.getElementById("errorMsg");
+  <script>
+    function loginUser(){
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value;
 
-  // Check for empty username
-  if(!username){
-    errorDiv.innerText = "Please enter username";
-    return;
-  }
+      // simple validation: no special characters in username
+      const specialCharPattern = /[^a-zA-Z0-9]/;
+      if(username === "" || specialCharPattern.test(username)){
+        document.getElementById("errorMsg").innerText = "Invalid credentials! Only letters & numbers allowed.";
+        return;
+      }
 
-  // Check if password contains special characters
-  const specialChar = /[^a-zA-Z0-9]/;
-  if(specialChar.test(password)){
-    errorDiv.innerText = "Invalid login! No special characters allowed.";
-    return;
-  }
-
-  // Valid login → go to shopping page
-  errorDiv.innerText = "";
-  localStorage.setItem("user", username); // optional: save username
-  window.location.href = "index.html";
-}
-</script>
-
+      // save user in localStorage
+      localStorage.setItem("user", username);
+      window.location.href = "index.html";
+    }
+  </script>
 </body>
 </html>
