@@ -3,63 +3,22 @@
 <head>
   <title>Payment</title>
   <style>
-    body {
-      text-align: center;
-      font-family: Arial;
-      margin-top: 80px;
-      background: #f5f5f5;
-    }
-
-    h2 {
-      margin-bottom: 30px;
-    }
-
-    button {
-      padding: 15px 30px;
-      margin: 10px;
-      font-size: 18px;
-      border: 2px solid #ff6f61;
-      background: white;
-      color: #ff6f61;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #ff6f61;
-      color: white;
-      transform: scale(1.05);
-    }
-
-    #upiBox {
-      display: none;
-      margin-top: 30px;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      width: 300px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    input {
-      padding: 10px;
-      width: 80%;
-      margin-top: 10px;
-      font-size: 16px;
-    }
+    body { text-align: center; font-family: Arial; margin-top: 50px; background: #f5f5f5; }
+    h2 { margin-bottom: 30px; }
+    button { padding: 15px 30px; margin: 10px; font-size: 18px; border: 2px solid #ff6f61; background: white; color: #ff6f61; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+    button:hover { background: #ff6f61; color: white; transform: scale(1.05); }
+    #upiBox { display: none; margin-top: 30px; background: white; padding: 20px; border-radius: 10px; width: 300px; margin-left: auto; margin-right: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input { padding: 10px; width: 80%; margin-top: 10px; font-size: 16px; }
+    #bill { display: none; margin-top: 30px; background: #fff; padding: 20px; border-radius: 10px; width: 350px; margin-left: auto; margin-right: auto; box-shadow: 0 0 15px rgba(0,0,0,0.2); text-align: left; }
+    #bill h3 { color: #ff6f61; }
   </style>
 </head>
 <body>
 
 <h2>Select Payment Method</h2>
-
 <button onclick="showUPI()">💳 UPI</button>
 <button onclick="payCOD()">📦 Cash on Delivery</button>
 
-<!-- UPI BOX -->
 <div id="upiBox">
   <h3>Enter UPI ID</h3>
   <input type="text" id="upi" placeholder="example@upi">
@@ -67,42 +26,60 @@
   <button onclick="payUPI()">Pay Now</button>
 </div>
 
+<div id="bill">
+  <h3>✅ Order Confirmed</h3>
+  <div id="billDetails"></div>
+  <p style="color:green; font-weight:bold;">Delivery arrives in 3-5 working days 🚚</p>
+  <button onclick="backHome()">🏠 Back to Home</button>
+</div>
+
 <script>
-function showUPI(){
+// GLOBAL CART TOTAL
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let total = 0;
+cart.forEach(item => total += item.price * item.qty);
+
+function showUPI() {
   document.getElementById("upiBox").style.display = "block";
 }
 
-function payUPI(){
-  let upi = document.getElementById("upi").value;
-  if(upi === ""){
-    alert("Please enter UPI ID");
-  } else {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let total = 0;
-    cart.forEach(item => { total += item.price * item.qty; });
+// SHOW BILL
+function showBill() {
+  const billDiv = document.getElementById("bill");
+  const billDetails = document.getElementById("billDetails");
 
-    saveOrder(cart, total); // order save admin me
+  billDetails.innerHTML = `<p>Order ID: ${Date.now()}</p>
+    <p>Date & Time: ${new Date().toLocaleString()}</p>
+    <p>Total: ₹${total}</p>
+    ${cart.map(item => `<p>${item.name} x ${item.qty} = ₹${item.price*item.qty}</p>`).join("")}`;
 
-    alert("UPI Payment Successful 🎉\n📦 Arriving in 3-5 working days!");
-    localStorage.removeItem("cart");
-    window.location.href = "index.html";
-  }
+  billDiv.style.display = "block";
 }
 
-function payCOD(){
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  let total = 0;
-  cart.forEach(item => { total += item.price * item.qty; });
+// PAY FUNCTIONS
+function payUPI() {
+  let upi = document.getElementById("upi").value;
+  if (upi === "") {
+    alert("Please enter UPI ID");
+    return;
+  }
+  alert("UPI Payment Successful 🎉");
+  saveOrder(cart, total);
+  showBill();
+}
 
-  saveOrder(cart, total); // order save admin me
+function payCOD() {
+  alert("Order Placed with Cash on Delivery 📦");
+  saveOrder(cart, total);
+  showBill();
+}
 
-  alert("Order Placed with Cash on Delivery 📦\n📦 Arriving in 3-5 working days!");
-  localStorage.removeItem("cart");
+function backHome() {
   window.location.href = "index.html";
 }
 
-// SAVE ORDER FUNCTION
-function saveOrder(cart, total){
+// SAVE ORDER
+function saveOrder(cart, total) {
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
   orders.push({
     id: Date.now(),
@@ -111,6 +88,7 @@ function saveOrder(cart, total){
     total: total
   });
   localStorage.setItem("orders", JSON.stringify(orders));
+  localStorage.removeItem("cart");
 }
 </script>
 
