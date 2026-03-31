@@ -2,66 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>E-Commerce Cart & Wishlist</title>
+<title>Cart</title>
 <link rel="stylesheet" href="style.css">
-<style>
-  body { font-family: Arial; background: linear-gradient(135deg, #ff9a9e, #fad0c4, #a18cd1); margin:0; padding:0; }
-  header { padding: 20px; background: rgba(255,255,255,0.8); display:flex; justify-content:space-between; align-items:center; }
-  h1 { margin: 0; }
-  a { text-decoration:none; padding:5px 10px; background:#fff; border-radius:5px; color:#333; }
-  #loader { display:none; text-align:center; margin-top:50px; font-size:20px; }
-  .page { display:none; padding:20px; }
-  .active { display:block; }
-  button { padding:10px 20px; cursor:pointer; margin-top:10px; }
-</style>
 </head>
 <body>
 
-<div id="loader">Loading...</div>
-
 <header>
-  <h1 id="page-title">Page</h1>
+  <h1>Your Cart 🛒</h1>
   <a href="index.html">🏠 Home</a>
 </header>
 
-<!-- Wishlist Section -->
-<div id="wishlist-page" class="page">
-  <div id="wishlist-items"></div>
-</div>
-
-<!-- Cart Section -->
-<div id="cart-page" class="page">
-  <div id="cart-items"></div>
-  <h3>Total: ₹<span id="total">0</span></h3>
-  <a href="payment.html"><button>Place Order</button></a>
-</div>
+<section id="cart-items-section"></section>
+<h3>Total: ₹<span id="total">0</span></h3>
+<button onclick="checkout()">Proceed to Payment</button>
 
 <script src="script.js"></script>
 <script>
-function showPage(page) {
-  document.getElementById('wishlist-page').classList.remove('active');
-  document.getElementById('cart-page').classList.remove('active');
-
-  if(page === 'cart') {
-    document.getElementById('cart-page').classList.add('active');
-    document.getElementById('page-title').innerText = 'Your Cart';
-    viewCartPage();
-  } else {
-    document.getElementById('wishlist-page').classList.add('active');
-    document.getElementById('page-title').innerText = 'Your Wishlist';
-    viewWishlistPage();
-  }
-}
-
-// Decide which page to show based on URL hash
-// Example: main.html#cart or main.html#wishlist
-const hash = window.location.hash.substring(1);
-if(hash === 'cart') {
-  showPage('cart');
-} else {
-  showPage('wishlist'); // default
-}
+document.addEventListener("DOMContentLoaded", function(){
+  loadCartPage();
+});
 </script>
-
 </body>
 </html>
