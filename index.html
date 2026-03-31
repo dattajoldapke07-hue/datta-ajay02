@@ -1,3 +1,10 @@
+<script>
+// User page access check
+if(localStorage.getItem("role") !== "user") {
+    alert("Please login first");
+    window.location.href = "login.html";
+}
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
