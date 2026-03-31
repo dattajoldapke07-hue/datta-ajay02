@@ -36,7 +36,7 @@
       transform: scale(1.05);
     }
 
-    #orders div, #admin-product-list li {
+    #orders div, #admin-product-list li, #all-orders div {
       border: 1px solid #ccc;
       padding: 10px;
       margin: 10px 0;
@@ -65,7 +65,12 @@
   <button onclick="addProduct()">Add Product</button>
 
   <h3>All Orders 🛒</h3>
-  <div id="orders"></div>
+  <!-- NEW BUTTON ADDED -->
+  <button onclick="showAllOrders()" style="padding:10px 20px; margin:10px; border-radius:8px; background:#ff6f61; color:white; border:none; cursor:pointer; font-weight:bold; font-size:16px;">
+    View All Orders
+  </button>
+
+  <div id="all-orders"></div> <!-- orders show hone ke liye -->
 
   <h3>Manage Products 🛠</h3>
   <ul id="admin-product-list"></ul>
@@ -153,6 +158,29 @@ function loadOrders() {
 
   orders.forEach(order => {
     ordersDiv.innerHTML += `
+      <div>
+        <h4>Order ID: ${order.id}</h4>
+        <p>Date & Time: ${order.date}</p>
+        <p>Total: ₹${order.total}</p>
+        ${order.items.map(item => `<p>${item.name} x ${item.qty} = ₹${item.price*item.qty}</p>`).join("")}
+      </div>
+    `;
+  });
+}
+
+// NEW FUNCTION: SHOW ALL ORDERS ON BUTTON CLICK
+function showAllOrders() {
+  const allOrdersDiv = document.getElementById("all-orders");
+  allOrdersDiv.innerHTML = "";
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  if(orders.length === 0){
+    allOrdersDiv.innerHTML = "<p>No orders yet.</p>";
+    return;
+  }
+
+  orders.forEach(order => {
+    allOrdersDiv.innerHTML += `
       <div>
         <h4>Order ID: ${order.id}</h4>
         <p>Date & Time: ${order.date}</p>
