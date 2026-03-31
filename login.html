@@ -1,43 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>User Login</title>
-  <style>
-    body { font-family: Arial; text-align:center; background:#f5f5f5; margin-top:100px; }
-    input { padding:10px; width:200px; margin:10px 0; }
-    button { padding:10px 20px; border-radius:8px; border:2px solid #ff6f61; background:white; color:#ff6f61; cursor:pointer; }
-    button:hover { background:#ff6f61; color:white; }
-  </style>
-</head>
-<body>
-
-<h2>User Login 🔑</h2>
-<input type="text" id="username" placeholder="Enter username"><br>
-<input type="password" id="password" placeholder="Enter password"><br>
-<button onclick="loginUser()">Login</button>
-
-<script>
 function loginUser() {
   let user = document.getElementById("username").value.trim();
   let pass = document.getElementById("password").value.trim();
 
+  // If fields empty, just go to index.html
   if(user === "" || pass === ""){
-    alert("Please enter username and password!");
+    alert("Skipping login, going to shop...");
+    window.location.href = "index.html";
     return;
   }
 
-  // Simple validation: no special characters in username
   if(/[^a-zA-Z0-9]/.test(user)){
     alert("Invalid characters in username!");
     return;
   }
 
-  // Save user session
   localStorage.setItem("loggedInUser", user);
-
-  // Redirect to main shopping page
   window.location.href = "index.html";
 }
-</script>
-</body>
-</html>
