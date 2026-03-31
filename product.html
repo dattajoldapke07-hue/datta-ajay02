@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Product</title>
+<meta charset="UTF-8">
+<title>Product Details</title>
 <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-<div id="loader">Loading...</div>
+
 <header>
   <h1>Product Details</h1>
   <a href="index.html">🏠 Home</a>
 </header>
 
-<div id="product-detail"></div>
+<section id="product-detail"></section>
 
 <script src="script.js"></script>
-
 <script>
-loadSingleProduct();
+document.addEventListener("DOMContentLoaded", function(){
+  loadSingleProduct();
+});
 </script>
-
 </body>
 </html>
