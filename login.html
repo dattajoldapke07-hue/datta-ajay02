@@ -67,24 +67,26 @@ function login(){
   const user = document.getElementById("username").value.trim();
   const pass = document.getElementById("password").value.trim();
 
-  // ADMIN FIXED
+  // 1️⃣ ADMIN CHECK FIRST
   if(user === "admin" && pass === "admin123"){
     window.location.href = "admin.html";
     return;
   }
 
-  // USER UNIQUE (optional: multiple users can register)
+  // 2️⃣ USER CHECK
   let users = JSON.parse(localStorage.getItem("users")) || [];
   let matched = users.find(u => u.username === user && u.password === pass);
 
   if(matched){
     window.location.href = "index.html";
-  } else {
-    alert("Invalid Credentials ❌");
+    return;
   }
+
+  // 3️⃣ INVALID
+  alert("Invalid Credentials ❌");
 }
 
-// Example: add a default user if not exists
+// Default user create if none
 (function(){
   let users = JSON.parse(localStorage.getItem("users")) || [];
   if(users.length === 0){
