@@ -190,3 +190,20 @@ function placeOrder(){
 
   window.location.href = "payment.html";
 }
+function loadOrders() {
+  const ordersDiv = document.getElementById("orders");
+  ordersDiv.innerHTML = ""; // clear pehle
+
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+  orders.forEach(order => {
+    ordersDiv.innerHTML += `
+      <div style="border:1px solid #ccc; padding:10px; margin:10px; border-radius:10px;">
+        <h4>Order ID: ${order.id}</h4>
+        <p>Date & Time: ${order.date}</p>
+        <p>Total: ₹${order.total}</p>
+        ${order.items.map(item => `<p>${item.name} x ${item.qty} = ₹${item.price*item.qty}</p>`).join("")}
+      </div>
+    `;
+  });
+}
