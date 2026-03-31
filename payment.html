@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Payment</title>
   <style>
     body {
@@ -73,38 +74,61 @@ function showUPI(){
   document.getElementById("upiBox").style.display = "block";
 }
 
+// UPI Payment
 function payUPI(){
-  let upi = document.getElementById("upi").value;
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  if(cart.length === 0){
+    alert("Your cart is empty!");
+    window.location.href = "index.html";
+    return;
+  }
+
+  let upi = document.getElementById("upi").value.trim();
   if(upi === ""){
     alert("Please enter UPI ID");
     return;
   }
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  let upiPattern = /^[\w.-]+@[\w]+$/;
+  if(!upiPattern.test(upi)){
+    alert("Enter valid UPI ID");
+    return;
+  }
+
   let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  saveOrder(cart, total);
-  window.location.href = "bill.html"; // redirect to bill page
+  saveOrder(cart, total, "UPI");
+  window.location.href = "bill.html";
 }
 
+// Cash on Delivery
 function payCOD(){
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  if(cart.length === 0){
+    alert("Your cart is empty!");
+    window.location.href = "index.html";
+    return;
+  }
+
   let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  saveOrder(cart, total);
-  window.location.href = "bill.html"; // redirect to bill page
+  saveOrder(cart, total, "Cash on Delivery");
+  window.location.href = "bill.html";
 }
 
-// Save order with date & total
-function saveOrder(cart, total){
+// Save order to localStorage
+function saveOrder(cart, total, method){
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
   orders.push({
     id: Date.now(),
     date: new Date().toLocaleString(),
     items: cart,
     total: total,
-    method: document.getElementById("upiBox").style.display === "block" ? "UPI" : "Cash on Delivery"
+    method: method
   });
+
   localStorage.setItem("orders", JSON.stringify(orders));
   localStorage.removeItem("cart");
 }
 </script>
+
 </body>
 </html>
