@@ -1,37 +1,181 @@
-<h3>All Orders 🛒</h3>
-<div id="orders"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 20px;
+      background: #f5f5f5;
+    }
+
+    h2, h3, h4 {
+      color: #ff6f61;
+    }
+
+    input {
+      padding: 8px;
+      margin: 5px 0;
+    }
+
+    button {
+      padding: 8px 15px;
+      margin: 5px;
+      border-radius: 8px;
+      border: 2px solid #ff6f61;
+      background: white;
+      color: #ff6f61;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff6f61;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    #orders div, #admin-product-list li {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      background: white;
+    }
+
+    #admin-panel {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background: #fff0f2;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<div id="admin-panel" class="hidden">
+  <h2>Admin Panel 👑</h2>
+
+  <input id="pname" placeholder="Product Name"><br>
+  <input id="pprice" placeholder="Price"><br>
+  <input id="pimg" placeholder="Image URL"><br>
+  <button onclick="addProduct()">Add Product</button>
+
+  <h3>All Orders 🛒</h3>
+  <div id="orders"></div>
+
+  <h3>Manage Products 🛠</h3>
+  <ul id="admin-product-list"></ul>
+  <button onclick="loadAdminProducts()">Refresh List</button>
+  <button onclick="closeAdmin()">Close</button>
+</div>
 
 <script>
+let products = JSON.parse(localStorage.getItem("products")) || []; // existing products
+
+// ADMIN OPEN
+document.addEventListener("keydown", function(e) {
+  if (e.key === "a") {
+    let pass = prompt("Enter Admin Password:");
+    if (pass === "admin123") {
+      openAdminPanel();
+    } else {
+      alert("Wrong Password ❌");
+    }
+  }
+});
+
+function openAdminPanel() {
+  document.getElementById("admin-panel").classList.remove("hidden");
+  loadAdminProducts();
+  loadOrders();
+}
+
+function closeAdmin() {
+  document.getElementById("admin-panel").classList.add("hidden");
+}
+
+// ADD PRODUCT
+function addProduct() {
+  let name = document.getElementById("pname").value;
+  let price = document.getElementById("pprice").value;
+  let img = document.getElementById("pimg").value;
+
+  if(name && price && img){
+    let newProduct = {
+      id: products.length + 1,
+      name: name,
+      price: Number(price),
+      image: img
+    };
+    products.push(newProduct);
+    localStorage.setItem("products", JSON.stringify(products));
+    loadAdminProducts();
+    alert("Product Added ✅");
+  } else {
+    alert("Fill all fields!");
+  }
+}
+
+function loadAdminProducts(){
+  const list = document.getElementById("admin-product-list");
+  list.innerHTML = "";
+
+  products.forEach(p=>{
+    let li = document.createElement("li");
+    li.innerHTML = `
+      ${p.name} - ₹${p.price}
+      <button onclick="deleteProductAdmin(${p.id})">🗑 Remove</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+function deleteProductAdmin(id){
+  if(confirm("Remove this product?")){
+    const index = products.findIndex(p => p.id === id);
+    products.splice(index, 1);
+    localStorage.setItem("products", JSON.stringify(products));
+    loadAdminProducts();
+    alert("Removed ✅");
+  }
+}
+
+// ORDERS
 function loadOrders() {
   const ordersDiv = document.getElementById("orders");
   ordersDiv.innerHTML = "";
 
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
-  if(orders.length === 0){
-    ordersDiv.innerHTML = "<p>No orders yet.</p>";
-    return;
-  }
-
   orders.forEach(order => {
-    let orderCard = document.createElement("div");
-    orderCard.style.border = "2px solid #ff6f61";
-    orderCard.style.padding = "15px";
-    orderCard.style.marginBottom = "15px";
-    orderCard.style.borderRadius = "10px";
-    orderCard.style.background = "#fff0f2";
-
-    let itemsHTML = "";
-    order.items.forEach(item => {
-      itemsHTML += `<p>${item.name} x ${item.qty} = ₹${item.price * item.qty}</p>`;
-    });
-
-    orderCard.innerHTML = `
-      <h4>Order ID: ${order.id}</h4>
-      <p><strong>Date & Time:</strong> ${order.date}</p>
-      ${itemsHTML}
-      <p><strong>Total Bill:</strong> ₹${order.total}</p>
+    ordersDiv.innerHTML += `
+      <div>
+        <h4>Order ID: ${order.id}</h4>
+        <p>Date & Time: ${order.date}</p>
+        <p>Total: ₹${order.total}</p>
+        ${order.items.map(item => `<p>${item.name} x ${item.qty} = ₹${item.price*item.qty}</p>`).join("")}
+      </div>
     `;
-    ordersDiv.appendChild(orderCard);
   });
 }
+
+// SAVE ORDER FUNCTION (used in payment page)
+function saveOrder(cart, total) {
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  orders.push({
+    id: Date.now(),
+    date: new Date().toLocaleString(),
+    items: cart,
+    total: total
+  });
+  localStorage.setItem("orders", JSON.stringify(orders));
+  localStorage.removeItem("cart");
+}
+</script>
+
+</body>
+</html>
