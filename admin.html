@@ -74,8 +74,7 @@
 </div>
 
 <script>
-let products = JSON.parse(localStorage.getItem("products")) || []; // tumhare existing products
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let products = JSON.parse(localStorage.getItem("products")) || []; // existing products
 
 // ADMIN OPEN
 document.addEventListener("keydown", function(e) {
@@ -164,7 +163,7 @@ function loadOrders() {
   });
 }
 
-// SAVE ORDER FUNCTION (use in payment page)
+// SAVE ORDER FUNCTION (used in payment page)
 function saveOrder(cart, total) {
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
   orders.push({
