@@ -9,26 +9,70 @@
 
 <!-- Login Overlay -->
 <div id="login-overlay">
-  <h2>Login</h2>
+  <h2>Login to Enter Store</h2>
   <input type="text" id="username" placeholder="Username">
   <input type="password" id="password" placeholder="Password">
   <button onclick="login()">Login</button>
   <p id="login-error" style="color:red; display:none;">Invalid username or password!</p>
 </div>
 
-<!-- Header -->
+<!-- Main Store -->
 <header id="main-header" class="hidden">
   <h1>🛍️ Datta & Ajay's Store</h1>
-  <div>
-    <button onclick="toggleDark()">🌙</button>
-    <a href="wishlist.html" class="nav-btn">❤️ Wishlist</a>
-    <a href="cart.html" class="nav-btn">🛒 Cart (<span id="cart-count">0</span>)</a>
-  </div>
+  <button onclick="viewWishlist()">❤️ Wishlist</button>
+  <button onclick="viewCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
 </header>
 
-<!-- Products -->
 <section id="products" class="hidden"></section>
 
+<!-- Cart Modal -->
+<div id="cart-modal" class="hidden">
+  <h2>Your Cart</h2>
+  <ul id="cart-items"></ul>
+  <h3>Total: ₹<span id="total">0</span></h3>
+  <button onclick="checkout()">Place Order</button>
+  <button onclick="closeCart()">Close</button>
+</div>
+
+<!-- Wishlist Modal -->
+<div id="wishlist-modal" class="hidden">
+  <h2>Your Wishlist ❤️</h2>
+  <ul id="wishlist-items"></ul>
+  <button onclick="closeWishlist()">Close</button>
+</div>
+
 <script src="script.js"></script>
+<script>
+  // --- Login Function ---
+  function login() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const errorMsg = document.getElementById("login-error");
+
+    if(username === "admin" && password === "1234") {
+      localStorage.setItem("loggedInUser", username); // Save login
+      document.getElementById("login-overlay").style.display = "none";
+      document.getElementById("main-header").classList.remove("hidden");
+      document.getElementById("products").classList.remove("hidden");
+      loadProducts();
+      updateCartCount();
+    } else {
+      errorMsg.style.display = "block";
+    }
+  }
+
+  // --- Auto-login check ---
+  window.addEventListener("DOMContentLoaded", () => {
+    const user = localStorage.getItem("loggedInUser");
+    if(user === "admin") {
+      document.getElementById("login-overlay").style.display = "none";
+      document.getElementById("main-header").classList.remove("hidden");
+      document.getElementById("products").classList.remove("hidden");
+      loadProducts();
+      updateCartCount();
+    }
+  });
+</script>
+
 </body>
 </html>
