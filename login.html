@@ -1,39 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Login - User</title>
+  <title>User Login</title>
   <style>
-    body { font-family: Arial; text-align: center; margin-top: 100px; background:#f5f5f5;}
-    input { padding:10px; margin:5px; width:200px; font-size:16px; }
-    button { padding:10px 20px; margin:10px; font-size:16px; border-radius:8px; cursor:pointer; border:2px solid #ff6f61; background:white; color:#ff6f61; transition:0.3s; }
-    button:hover { background:#ff6f61; color:white; transform:scale(1.05); }
-    .error { color:red; font-weight:bold; }
+    body { font-family: Arial; text-align:center; background:#f5f5f5; margin-top:100px; }
+    input { padding:10px; width:200px; margin:10px 0; }
+    button { padding:10px 20px; border-radius:8px; border:2px solid #ff6f61; background:white; color:#ff6f61; cursor:pointer; }
+    button:hover { background:#ff6f61; color:white; }
   </style>
 </head>
 <body>
-  <h2>User Login</h2>
-  <input type="text" id="username" placeholder="Enter username"><br>
-  <input type="password" id="password" placeholder="Any password"><br>
-  <button onclick="loginUser()">Login</button>
-  <p id="errorMsg" class="error"></p>
 
-  <script>
-    function loginUser(){
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
+<h2>User Login 🔑</h2>
+<input type="text" id="username" placeholder="Enter username"><br>
+<input type="password" id="password" placeholder="Enter password"><br>
+<button onclick="loginUser()">Login</button>
 
-      // simple validation: no special characters in username
-      const specialCharPattern = /[^a-zA-Z0-9]/;
-      if(username === "" || specialCharPattern.test(username)){
-        document.getElementById("errorMsg").innerText = "Invalid credentials! Only letters & numbers allowed.";
-        return;
-      }
+<script>
+function loginUser() {
+  let user = document.getElementById("username").value.trim();
+  let pass = document.getElementById("password").value.trim();
 
-      // save user in localStorage
-      localStorage.setItem("user", username);
-      window.location.href = "index.html";
-    }
-  </script>
+  if(user === "" || pass === ""){
+    alert("Please enter username and password!");
+    return;
+  }
+
+  // Simple validation: no special characters in username
+  if(/[^a-zA-Z0-9]/.test(user)){
+    alert("Invalid characters in username!");
+    return;
+  }
+
+  // Save user session
+  localStorage.setItem("loggedInUser", user);
+
+  // Redirect to main shopping page
+  window.location.href = "index.html";
+}
+</script>
 </body>
 </html>
