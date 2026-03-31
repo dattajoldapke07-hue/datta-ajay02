@@ -3,12 +3,54 @@
 <head>
   <title>Payment</title>
   <style>
-    body { text-align:center; font-family:Arial; margin-top:50px; background:#f5f5f5; }
-    button{ padding:15px 30px; margin:10px; font-size:18px; border:2px solid #ff6f61; border-radius:10px; cursor:pointer; transition:0.3s; background:white; color:#ff6f61;}
-    button:hover{ background:#ff6f61; color:white; transform:scale(1.05);}
-    #upiBox{display:none; margin-top:20px; background:white; padding:20px; border-radius:10px; width:300px; margin-left:auto; margin-right:auto; box-shadow:0 0 10px rgba(0,0,0,0.1);}
-    input{padding:10px; width:80%; margin-top:10px; font-size:16px;}
-    #billBox{display:none; margin-top:20px; background:white; padding:20px; border-radius:10px; width:350px; margin-left:auto; margin-right:auto; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+    body {
+      text-align: center;
+      font-family: Arial;
+      margin-top: 80px;
+      background: #f5f5f5;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      color: #ff6f61;
+    }
+
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 18px;
+      border: 2px solid #ff6f61;
+      background: white;
+      color: #ff6f61;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff6f61;
+      color: white;
+      transform: scale(1.05);
+    }
+
+    #upiBox {
+      display: none;
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input {
+      padding: 10px;
+      width: 80%;
+      margin-top: 10px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -18,6 +60,7 @@
 <button onclick="showUPI()">💳 UPI</button>
 <button onclick="payCOD()">📦 Cash on Delivery</button>
 
+<!-- UPI BOX -->
 <div id="upiBox">
   <h3>Enter UPI ID</h3>
   <input type="text" id="upi" placeholder="example@upi">
@@ -25,51 +68,43 @@
   <button onclick="payUPI()">Pay Now</button>
 </div>
 
-<div id="billBox"></div>
-
 <script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let total = 0;
-cart.forEach(item => total += item.price * item.qty);
-
-function showUPI(){ document.getElementById("upiBox").style.display="block"; }
+function showUPI(){
+  document.getElementById("upiBox").style.display = "block";
+}
 
 function payUPI(){
   let upi = document.getElementById("upi").value;
-  if(upi===""){ alert("Enter UPI ID"); return; }
-  saveOrder();
-  showBill("UPI Payment Successful 🎉");
+  if(upi === ""){
+    alert("Please enter UPI ID");
+    return;
+  }
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  saveOrder(cart, total);
+  window.location.href = "bill.html"; // redirect to bill page
 }
 
 function payCOD(){
-  saveOrder();
-  showBill("Order Placed with Cash on Delivery 📦");
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  saveOrder(cart, total);
+  window.location.href = "bill.html"; // redirect to bill page
 }
 
-function saveOrder(){
+// Save order with date & total
+function saveOrder(cart, total){
   let orders = JSON.parse(localStorage.getItem("orders")) || [];
   orders.push({
     id: Date.now(),
     date: new Date().toLocaleString(),
     items: cart,
-    total: total
+    total: total,
+    method: document.getElementById("upiBox").style.display === "block" ? "UPI" : "Cash on Delivery"
   });
   localStorage.setItem("orders", JSON.stringify(orders));
   localStorage.removeItem("cart");
 }
-
-function showBill(msg){
-  const box = document.getElementById("billBox");
-  box.innerHTML = `<h3>${msg}</h3>
-    <p>Total: ₹${total}</p>
-    ${cart.map(i=>`<p>${i.name} x ${i.qty} = ₹${i.price*i.qty}</p>`).join("")}
-    <p><strong>📦 Arriving in 3-5 working days</strong></p>
-    <br><button onclick="goHome()">🏠 Go to Store</button>`;
-  box.style.display="block";
-}
-
-function goHome(){ window.location.href="index.html"; }
 </script>
-
 </body>
 </html>
