@@ -11,7 +11,12 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+<script>
+let user = localStorage.getItem("loggedInUser");
+if(!user){
+  window.location.href = "login.html";
+}
+</script>
 <!-- 3D Intro Screen -->
 <div id="intro">
   <h1 class="logo">🛍️ Datta & Ajay's Store</h1>
